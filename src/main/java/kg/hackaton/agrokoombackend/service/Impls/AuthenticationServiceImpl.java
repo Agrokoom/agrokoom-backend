@@ -112,7 +112,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private void sendToken(RecoveryToken recoveryToken, User user) {
         SimpleMailMessage activationEmail = new SimpleMailMessage();
-        activationEmail.setFrom("bilem@gmail.com");
+        activationEmail.setFrom("agrokoom@gmail.com");
         activationEmail.setTo(user.getEmail());
         activationEmail.setSubject("Активация аккаунта");
         activationEmail.setText("Для активации аккаунта введите следующий код: " + recoveryToken.getToken() +
