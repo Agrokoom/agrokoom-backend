@@ -45,7 +45,7 @@ public class ProductService {
 
     public ResponseEntity<String> saveProductWithImages(Long id, MultipartFile[] files) {
         Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with id %d has not been found".formatted(id)));
-        product.setImages(imageService.uploadImages(files, ImagePath.PRODUCT));
+        product.setImages(imageService.uploadImages(files));
         productRepository.save(product);
         return ResponseEntity.ok("Продукт успешно внесен в базу данных");
     }
