@@ -57,4 +57,20 @@ public class RestControllerExceptionHandler extends ResponseEntityExceptionHandl
 
         return new ResponseEntity<>(err, err.getStatus());
     }
+
+    @ExceptionHandler(FileEmptyException.class)
+    public ResponseEntity<Object> handleUserAlreadyExist(
+            FileEmptyException ex) {
+
+        List<String> details = new ArrayList<>();
+        details.add(ex.getMessage());
+
+        ApiError err = new ApiError(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST,
+                "File is empty" ,
+                details);
+
+        return new ResponseEntity<>(err, err.getStatus());
+    }
 }

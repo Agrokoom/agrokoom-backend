@@ -5,23 +5,27 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import kg.hackaton.agrokoombackend.enums.ImagePath;
 import kg.hackaton.agrokoombackend.exception.UnsupportedImageTypeException;
+import kg.hackaton.agrokoombackend.model.User;
+import kg.hackaton.agrokoombackend.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.experimental.FieldDefaults;
 import org.apache.http.entity.ContentType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+
+import static org.aspectj.weaver.tools.cache.SimpleCacheFactory.path;
 
 
 @Service
+@RequiredArgsConstructor
 public class ImageService {
-
+    private final UserRepository userRepository;
     private final String cloudinaryUrl = "CLOUDINARY_URL=cloudinary://381336617786497:hvkn87CD5_CcoBU3g6m1FSwHo-I@agrokoom";
     private final Cloudinary cloudinary = new Cloudinary((cloudinaryUrl));
-
 
     @SneakyThrows
     public List<String> uploadImages(MultipartFile[] files, ImagePath path) {
@@ -39,6 +43,34 @@ public class ImageService {
     }
 
     @SneakyThrows
+    public ResponseEntity<String> saveForUser(MultipartFile file, User user) {
+        checkImage(file);
+        var upload = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
+                "folder", ImagePath.USER,
+                "public_id", getRandomUUID(),
+                "unique_filename", "true"
+        ));
+        user.setImageUrl((String) upload.get("secure_url"));
+        userRepository.save(user);
+
+        return ResponseEntity.ok("Фотография сохранена");
+    }
+
+    @SneakyThrows
+    public ResponseEntity<String> saveRegistrationCertificate(MultipartFile file, User user) {
+        checkImage(file);
+        var upload = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
+                "folder", ImagePath.USER,
+                "public_id", getRandomUUID(),
+                "unique_filename", "true"
+        ));
+        user.setRegistrationCertificateUrl((String) upload.get("secure_url"));
+        userRepository.save(user);
+
+        return ResponseEntity.ok("Свидетельство о регистрации сохранено");
+    }
+
+    @SneakyThrows
     public String uploadImage(MultipartFile file, ImagePath path) {
         checkImage(file);
         return (String) cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
@@ -47,9 +79,6 @@ public class ImageService {
                 "unique_filename", "true"
         )).get("secure_url");
     }
-
-
-
 
     public void checkImage(MultipartFile file) {
         if (!Arrays.asList(ContentType.IMAGE_GIF.getMimeType(),
