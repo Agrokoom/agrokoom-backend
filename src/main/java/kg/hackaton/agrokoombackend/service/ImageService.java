@@ -27,12 +27,12 @@ public class ImageService {
     }
 
     @SneakyThrows
-    public List<String> uploadImages(MultipartFile[] files, ImagePath path) {
+    public List<String> uploadImages(MultipartFile[] files) {
         List<String> urls = new ArrayList<>();
         for (MultipartFile file : files) {
             checkImage(file);
             var upload = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
-                    "folder",path.getPathToImage(),
+                    "folder", ImagePath.PRODUCT.getPathToImage(),
                     "public_id", getRandomUUID(),
                     "unique_filename", "true"
             ));
@@ -45,7 +45,7 @@ public class ImageService {
     public ResponseEntity<String> saveForUser(MultipartFile file, User user) {
         checkImage(file);
         var upload = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
-                "folder", ImagePath.USER,
+                "folder", ImagePath.USER.getPathToImage(),
                 "public_id", getRandomUUID(),
                 "unique_filename", "true"
         ));
