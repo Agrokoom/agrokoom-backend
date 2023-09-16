@@ -13,6 +13,7 @@ import kg.hackaton.agrokoombackend.service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +52,7 @@ public class UserController {
         return userService.changeUsersInfo(updateUser, user);
     }
 
-    @PostMapping("/save-image")
+    @PostMapping(value = "/save-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @SecurityRequirement(name = "JWT")
     @Operation(
             summary = "Добавление или обновление фотографии пользователя"
@@ -61,7 +62,7 @@ public class UserController {
         return imageService.saveForUser(file, user);
     }
 
-    @PostMapping("/save-registration-certificate")
+    @PostMapping(value = "/save-registration-certificate", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @SecurityRequirement(name = "JWT")
     @Operation(
             summary = "Добавление или обновление свидетельства о регистрации"
