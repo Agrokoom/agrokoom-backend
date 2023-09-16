@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kg.hackaton.agrokoombackend.model.Product;
+import kg.hackaton.agrokoombackend.model.User;
 import kg.hackaton.agrokoombackend.service.Impls.ProductService;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,8 +56,9 @@ public class ProductController {
     @Operation(
             summary = "Добавление продукта"
     )
-    public Long addProduct(@RequestBody Product product){
-        return productService.saveProduct(product);
+    public ResponseEntity<Long> addProduct(@RequestBody Product product,
+                                           @AuthenticationPrincipal User user){
+        return productService.saveProduct(product, user);
     }
 
     @PostMapping(value = "/add-image/{product_id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

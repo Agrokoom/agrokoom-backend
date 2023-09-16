@@ -4,7 +4,9 @@ package kg.hackaton.agrokoombackend.service.Impls;
 import kg.hackaton.agrokoombackend.enums.ImagePath;
 import kg.hackaton.agrokoombackend.exception.ProductNotFoundException;
 import kg.hackaton.agrokoombackend.model.Product;
+import kg.hackaton.agrokoombackend.model.User;
 import kg.hackaton.agrokoombackend.repository.ProductRepository;
+import kg.hackaton.agrokoombackend.repository.UserRepository;
 import kg.hackaton.agrokoombackend.service.ImageService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProductService {
     ProductRepository productRepository;
     ImageService imageService;
+    UserRepository userRepository;
 
     public Page<Product> fetchProducts(Pageable pageable) {
         return productRepository.findAll(pageable);
@@ -33,8 +36,11 @@ public class ProductService {
         return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with id %d has not been found".formatted(id)));
     }
 
-    public Long saveProduct(Product product) {
-        return productRepository.save(product).getId();
+    public ResponseEntity<Long> saveProduct(Product product, User user) {
+        Product save = productRepository.save(product);
+        user.getProducts().add(save);
+        userRepository.save(user);
+        return ResponseEntity.ok(save.getId());
     }
 
     public ResponseEntity<String> saveProductWithImage(Long id, MultipartFile file) {
