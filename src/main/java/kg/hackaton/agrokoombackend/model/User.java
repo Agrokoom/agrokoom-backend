@@ -1,9 +1,6 @@
 package kg.hackaton.agrokoombackend.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import kg.hackaton.agrokoombackend.enums.Role;
 import kg.hackaton.agrokoombackend.enums.Status;
 import lombok.*;
@@ -14,7 +11,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -30,11 +29,36 @@ import java.util.Objects;
 public class User extends BaseEntity implements UserDetails {
     String name;
 
+    String secondName;
+
+    String surname;
+
+    String closePersonName;
+
+    String closePersonSecondName;
+
+    String closePersonSurname;
+
+    String closePersonPhoneNumber;
+
+    LocalDate dateOfBirth;
+
     String email;
 
     String phoneNumber;
 
     String imageUrl;
+
+    String businessRegistrationForm;
+
+    String INN;
+
+    String OKEDCode;
+
+    String registrationCertificateUrl;
+
+    @OneToMany(fetch = FetchType.EAGER, targetEntity = Payment.class, cascade = CascadeType.ALL)
+    List<Payment> paymentAccounts;
 
     String password;
 
@@ -49,6 +73,10 @@ public class User extends BaseEntity implements UserDetails {
 
     @UpdateTimestamp
     LocalDateTime updatedAt;
+
+
+    @OneToMany(fetch = FetchType.EAGER, targetEntity = Product.class, cascade = CascadeType.ALL)
+    private List<Product> products = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
