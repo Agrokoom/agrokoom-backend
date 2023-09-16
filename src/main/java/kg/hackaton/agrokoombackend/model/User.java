@@ -57,7 +57,7 @@ public class User extends BaseEntity implements UserDetails {
 
     String registrationCertificateUrl;
 
-    @OneToMany(fetch = FetchType.EAGER, targetEntity = Payment.class, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, targetEntity = Payment.class, cascade = CascadeType.ALL)
     List<Payment> paymentAccounts;
 
     String password;
