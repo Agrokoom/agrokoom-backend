@@ -2,6 +2,7 @@ package kg.hackaton.agrokoombackend.service.Impls;
 
 import kg.hackaton.agrokoombackend.dto.AuthenticationResponse;
 import kg.hackaton.agrokoombackend.dto.user.RequestUserDTO;
+import kg.hackaton.agrokoombackend.enums.Role;
 import kg.hackaton.agrokoombackend.enums.Status;
 import kg.hackaton.agrokoombackend.exception.NoAccessException;
 import kg.hackaton.agrokoombackend.exception.NotFoundException;
@@ -106,6 +107,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .name(userDTO.getName())
                 .email(userDTO.getEmail())
                 .password(passwordEncoder.encode(userDTO.getPassword()))
+                .role(Role.USER)
                 .status(Status.ACTIVE)
                 .build();
     }
