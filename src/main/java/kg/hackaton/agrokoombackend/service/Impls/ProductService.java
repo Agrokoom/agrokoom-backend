@@ -12,6 +12,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,8 +25,8 @@ public class ProductService {
     ProductRepository productRepository;
     ImageService imageService;
 
-    public Page<Product> fetchProducts(PageRequest pageRequest) {
-        return productRepository.findAll(pageRequest);
+    public Page<Product> fetchProducts(Pageable pageable) {
+        return productRepository.findAll(pageable);
     }
 
     public Product fetchProductById(Long id) {
@@ -50,7 +51,7 @@ public class ProductService {
         return ResponseEntity.ok("Продукт успешно внесен в базу данных");
     }
 
-    public Page<Product> search(String keyword,PageRequest pageRequest) {
-        return productRepository.findAll(pageRequest);
+    public Page<Product> search(String keyword, Pageable pageable) {
+        return productRepository.findAll(pageable);
     }
 }
