@@ -7,9 +7,7 @@ import kg.hackaton.agrokoombackend.enums.ImagePath;
 import kg.hackaton.agrokoombackend.exception.UnsupportedImageTypeException;
 import kg.hackaton.agrokoombackend.model.User;
 import kg.hackaton.agrokoombackend.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import lombok.experimental.FieldDefaults;
 import org.apache.http.entity.ContentType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,15 +15,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
-import static org.aspectj.weaver.tools.cache.SimpleCacheFactory.path;
-
 
 @Service
-@RequiredArgsConstructor
 public class ImageService {
     private final UserRepository userRepository;
-    private final String cloudinaryUrl = "CLOUDINARY_URL=cloudinary://381336617786497:hvkn87CD5_CcoBU3g6m1FSwHo-I@agrokoom";
+    private final String cloudinaryUrl = "cloudinary://381336617786497:hvkn87CD5_CcoBU3g6m1FSwHo-I@agrokoom";
     private final Cloudinary cloudinary = new Cloudinary((cloudinaryUrl));
+
+    public ImageService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @SneakyThrows
     public List<String> uploadImages(MultipartFile[] files, ImagePath path) {
