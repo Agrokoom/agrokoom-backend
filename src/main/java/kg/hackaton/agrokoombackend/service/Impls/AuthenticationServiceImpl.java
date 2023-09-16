@@ -1,7 +1,9 @@
 package kg.hackaton.agrokoombackend.service.Impls;
 
+import jakarta.annotation.PostConstruct;
 import kg.hackaton.agrokoombackend.dto.AuthenticationResponse;
 import kg.hackaton.agrokoombackend.dto.user.RequestUserDTO;
+import kg.hackaton.agrokoombackend.enums.Role;
 import kg.hackaton.agrokoombackend.enums.Status;
 import kg.hackaton.agrokoombackend.exception.NoAccessException;
 import kg.hackaton.agrokoombackend.exception.NotFoundException;
@@ -20,7 +22,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -136,4 +137,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .createdAt(LocalDateTime.now())
                 .build();
     }
+
+
 }

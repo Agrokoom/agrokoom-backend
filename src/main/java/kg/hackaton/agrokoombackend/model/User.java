@@ -28,6 +28,8 @@ import java.util.Objects;
 public class User extends BaseEntity implements UserDetails {
     String name;
 
+
+    @Column(nullable = false,unique = true)
     String email;
 
     String phoneNumber;
@@ -50,7 +52,7 @@ public class User extends BaseEntity implements UserDetails {
 
 
     @OneToMany(fetch = FetchType.EAGER,targetEntity = Product.class,cascade = CascadeType.ALL)
-    private List<Product> products = new ArrayList<>();
+    List<Product> products = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

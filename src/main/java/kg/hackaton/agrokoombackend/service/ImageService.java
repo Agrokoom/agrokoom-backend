@@ -5,7 +5,8 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import kg.hackaton.agrokoombackend.enums.ImagePath;
 import kg.hackaton.agrokoombackend.exception.UnsupportedImageTypeException;
-import lombok.SneakyThrows;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.apache.http.entity.ContentType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,10 +18,11 @@ import java.util.UUID;
 
 
 @Service
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ImageService {
 
-    private final String cloudinaryUrl = "CLOUDINARY_URL=cloudinary://381336617786497:hvkn87CD5_CcoBU3g6m1FSwHo-I@agrokoom";
-    private final Cloudinary cloudinary = new Cloudinary((cloudinaryUrl));
+    String cloudinaryUrl = "cloudinary://381336617786497:hvkn87CD5_CcoBU3g6m1FSwHo-I@agrokoom";
+    Cloudinary cloudinary = new Cloudinary((cloudinaryUrl));
 
 
     @SneakyThrows
