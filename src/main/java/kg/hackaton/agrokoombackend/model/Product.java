@@ -2,10 +2,7 @@ package kg.hackaton.agrokoombackend.model;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import java.util.ArrayList;
@@ -20,7 +17,6 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Product extends BaseEntity{
-
     @Column(nullable = false)
     String category;
 
@@ -54,12 +50,12 @@ public class Product extends BaseEntity{
 
     @Column(name = "key_words",nullable = false)
     @JsonProperty("product_key_words")
-    @ElementCollection(targetClass=String.class)
+    @ElementCollection(targetClass=String.class, fetch = FetchType.EAGER)
     List<String> keyWords = new ArrayList<>();
 
     @Column(name = "image_urls")
     @JsonProperty("product_images")
-    @ElementCollection(targetClass=String.class)
+    @ElementCollection(targetClass=String.class, fetch = FetchType.EAGER)
     List<String> images = new ArrayList<>();
 
     @Column(name = "commerce_type",nullable = false)
