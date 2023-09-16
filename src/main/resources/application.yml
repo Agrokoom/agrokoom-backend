@@ -1,1 +1,32 @@
-
+spring:
+  datasource:
+    url: ${PG_DB_URL}
+    username: ${PG_USERNAME}
+    password: ${PG_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    open-in-view: false
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${G_EMAIL}
+    password: ${G_PASS}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+app:
+  jwtSecret: +K0QzhYm/mYskJkuIvhz/gjyjLNsIyXu88nPtgEnDYa5eZF7vXAp6o9eo4Nhng9l
+  jwtExpirationInMs: 36000000
+  recoveryValidityInSeconds: 7200
